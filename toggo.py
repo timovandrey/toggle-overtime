@@ -14,23 +14,40 @@ from re import A
 from urllib import request
 from xmlrpc.client import DateTime
 from toggl.TogglPy import Toggl
+import json
 
 ################################################################################
 # OBJECT DECLARATION & DEFINITION                                              #
 ################################################################################
-
-class Toggo():
+class Toggo:
 
     def __init__(self, userEmail, userPassword, userApiToken):
         global toggl
         toggl = Toggl()
         toggl.setAuthCredentials(userEmail, userPassword) 
         toggl.setAPIKey(userApiToken)
+        self.data = None
+        return
+
+    def save(self):
+        with open(SYNC_FILE_NAME, "w+") as fp:
+            fp.write(json.dumps(self.data))
+        return
+
+    def load(self):
+        with open(SYNC_FILE_NAME, "r+") as fp:
+            self.data = json.load(fp)
+        return
+
+    def sync(self, timeZone : datetime.time):
+        today = datetime.datetime.now()
+        startdate = datetime.datetime.strptime(START_DATE, START_DATE_FORMAT)
+        self.data = self.fetchDataEntries(startdate, today, timeZone)
 
     def fetchDataEntries(self, startDate : datetime.date, endDate : datetime.date, timeZone : datetime.time):
         response = toggl.request(self.modRequestURL(startDate, endDate, timeZone))
-        pass
-    
+        return response
+
     def modRequestURL(self, startDate : datetime.date, endDate : datetime.date, timeZone : datetime.time):
         startDateImplicator = "start_date"
         endDateImplicator = "end_date"

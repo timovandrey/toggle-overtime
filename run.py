@@ -19,15 +19,25 @@ from credentials import *
 # MAIN                                                                         #
 ################################################################################
 def main():
-    startDate = datetime.date(2022, 6, 13)
-    endDate = datetime.date(2022, 6, 19)
-    timeZone = datetime.time(2, 0, 0)
-
     toggo = Toggo(  userEmail=USER_EMAIL, 
                     userPassword=USER_PASSWORD, 
                     userApiToken=USER_API_TOKEN)
-    toggo.fetchDataEntries(startDate, endDate, timeZone)
-    
+    timeZone = datetime.time(2, 0, 0)
+    toggo.sync(timeZone=timeZone)
+    #toggo.load()
+
+    # Test
+    totalBreakTime = 0
+    for entry in toggo.data:
+        try:
+            if(entry["description"] != "Pause"):
+                continue
+            totalBreakTime += entry["duration"]
+        except:
+            pass
+    print("Total break time:", totalBreakTime)
+
+    toggo.save()
     return
 
 ################################################################################

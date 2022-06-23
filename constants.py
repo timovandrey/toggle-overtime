@@ -1,15 +1,27 @@
 ################################################################################
-# GLOBALS                                                                      #
+# File:         constants.py
+# Author:       Timo Vandrey
+# Date:         19.06.2022
+# Version:      1
+# Description:
+# These is the general hub for all the constants used in the toggl overtime
+# calculator. Not all are in here, but most.
+################################################################################
+# CONSTANTS / GLOBALS                                                          #
 ################################################################################
 # Tracking related
-BREAK_KEYWORDS = ["Pause"]
+BREAK_KEYWORDS = ["Pause", "Break", ]
 BREAK_MIN_TIME = 45
-
 TOGGL_API_URL_BASE = "https://api.track.toggl.com/api/v8/time_entries"
-#https://api.track.toggl.com/api/v8/time_entries?start_date=2013-03-10T15%3A42%3A46%2B02%3A00&end_date=2013-03-12T15%3A42%3A46%2B02%3A00"
 
+# HTML related
 URL_COLON = "%3A"
 URL_PLUS = "%2B"
 
-# User data
-# The users Toggl API token can be found under Toggl -> My Profile (scroll down
+# Sync related
+START_DATE = "2020.01.01, 00:00:00.00"
+START_DATE_FORMAT = "%Y.%m.%d, %H:%M:%S.%f"
+
+# Save related
+SYNC_FILE_NAME = "data.json"
+
