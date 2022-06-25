@@ -10,7 +10,7 @@
 # CONSTANTS / GLOBALS                                                          #
 ################################################################################
 # Tracking related
-BREAK_KEYWORDS = ["Pause", "Break", ]
+BREAK_KEYWORDS = ["Pause", "Break"]
 BREAK_MIN_TIME = 45
 TOGGL_API_URL_BASE = "https://api.track.toggl.com/api/v8/time_entries"
 

@@ -9,35 +9,35 @@
 ################################################################################
 # IMPORTS                                                                      #
 ################################################################################
+# Project specific
+from credentials import *
+from datahandler import DataHandler
+from entryparser import EntryParser
+# General
 import datetime
 from email.errors import StartBoundaryNotFoundDefect
+# Toggl API
 from toggl.TogglPy import Toggl
-from toggo import Toggo
-from credentials import *
 
 ################################################################################
 # MAIN                                                                         #
 ################################################################################
 def main():
-    toggo = Toggo(  userEmail=USER_EMAIL, 
+    dh = DataHandler(  userEmail=USER_EMAIL, 
                     userPassword=USER_PASSWORD, 
                     userApiToken=USER_API_TOKEN)
     timeZone = datetime.time(2, 0, 0)
-    toggo.sync(timeZone=timeZone)
-    #toggo.load()
-
+    dh.download(timeZone=timeZone)
+    
     # Test
-    totalBreakTime = 0
-    for entry in toggo.data:
-        try:
-            if(entry["description"] != "Pause"):
-                continue
-            totalBreakTime += entry["duration"]
-        except:
-            pass
-    print("Total break time:", totalBreakTime)
+    parser = EntryParser()
+    workdays = parser.getWorkDays(dh.data)
 
-    toggo.save()
+    print(workdays)
+    print("Worked days:", len(workdays))
+
+
+    dh.save()
     return
 
 ################################################################################

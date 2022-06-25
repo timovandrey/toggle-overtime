@@ -1,25 +1,29 @@
 ################################################################################
-# File:         toggo.py
+# File:         datahandler.py
 # Author:       Timo Vandrey
 # Date:         07.06.2022
 # Version:      1
 # Description:
-# This main object of the overtime calculator.
+# This is an object for easy access to Toggl time data.
 ################################################################################
 # IMPORTS                                                                      #
 ################################################################################
+# Project specific
 from constants import *
+from exceptions import *
+# General
 import datetime
 from re import A
 from urllib import request
 from xmlrpc.client import DateTime
-from toggl.TogglPy import Toggl
 import json
+# Toggl API
+from toggl.TogglPy import Toggl
 
 ################################################################################
 # OBJECT DECLARATION & DEFINITION                                              #
 ################################################################################
-class Toggo:
+class DataHandler:
 
     def __init__(self, userEmail, userPassword, userApiToken):
         global toggl
@@ -39,10 +43,13 @@ class Toggo:
             self.data = json.load(fp)
         return
 
-    def sync(self, timeZone : datetime.time):
+    def download(self, timeZone : datetime.time):
         today = datetime.datetime.now()
         startdate = datetime.datetime.strptime(START_DATE, START_DATE_FORMAT)
         self.data = self.fetchDataEntries(startdate, today, timeZone)
+
+    def upload(self):
+        raise NotImplementedError
 
     def fetchDataEntries(self, startDate : datetime.date, endDate : datetime.date, timeZone : datetime.time):
         response = toggl.request(self.modRequestURL(startDate, endDate, timeZone))
@@ -51,7 +58,7 @@ class Toggo:
     def modRequestURL(self, startDate : datetime.date, endDate : datetime.date, timeZone : datetime.time):
         startDateImplicator = "start_date"
         endDateImplicator = "end_date"
-            
+
         requestUrl = TOGGL_API_URL_BASE
         requestUrlAdd = ""
         requestUrlAdd += "?"

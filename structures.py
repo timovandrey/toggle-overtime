@@ -1,27 +1,20 @@
 ################################################################################
-# File:         entry.py
+# File:         structures.py
 # Author:       Timo Vandrey
-# Date:         23.06.2022
+# Date:         25.06.2022
 # Version:      1
 # Description:
-# This object represents a day for the tracking of the time, breaks and overtime
+# This file is to collect all structures, enums, etc.
 ################################################################################
 # IMPORTS                                                                      #
 ################################################################################
 import enum
 
 ################################################################################
-# OBJECT DECLARATION & DEFINITION                                              #
+# DEFINITIONS                                                                  #
 ################################################################################
 class DayType(enum.Enum):
     NormalWork = 0
     SickLeave = 1
     OvertimeReduction = 2
     Vacation = 3
-
-class Entry:
-    
-    def __init__(self):
-        self.breakTime = 0
-        self.dayType = DayType.NormalWork
-        return
