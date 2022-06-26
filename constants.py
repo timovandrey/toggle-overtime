@@ -11,7 +11,6 @@
 ################################################################################
 # Tracking related
 BREAK_KEYWORDS = ["Pause", "Break"]
-BREAK_MIN_TIME = 45
 TOGGL_API_URL_BASE = "https://api.track.toggl.com/api/v8/time_entries"
 
 # HTML related
@@ -25,3 +24,13 @@ START_DATE_FORMAT = "%Y.%m.%d, %H:%M:%S.%f"
 # Save related
 SYNC_FILE_NAME = "data.json"
 
+# Calculation related
+# Hint: The duration in the field "duration" of an entry is always given in seconds.
+BREAK_MIN_TIME = 45
+WEEKLY_WORK_TIME = 40 # In hours
+SEC_TO_HOURS = 1/(60*60)
+MIN_TO_HOURS = 1/60
+HOURS_TO_MIN = 60
+HOURS_TO_SEC = 60*60
+MIN_TO_SEC = 60
+SEC_TO_MIN = 1/60
