@@ -9,7 +9,7 @@ To make this work, you need to tag your breaks. The breaks should have the descr
 - etc.
 
 ## Current state
-The current state of the program does nothing fancy. It is just getting developed so expect not much from this. To try it out on your own you need to clone this repo and then create a file called `credentials.py` in the repo directory. In that file, you need to write the follwing:
+The current state of the program does nothing fancy. It is just getting developed so expect not much from this. To try it out on your own you need to clone this repo and then create a file called `credentials.py` in the repo directory. In that file, you need to write the following:
 ```python
 # User data
 # The users Toggl API token can be found under Toggl -> My Profile (scroll down)
