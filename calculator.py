@@ -48,19 +48,64 @@ class Calculator:
         self.parser = EntryParser()
                 
         self.timeZone = datetime.time(2, 0, 0)
-        self.startDate = datetime.strptime(START_DATE, START_DATE_FORMAT)
-        self.endDate = datetime.now().date
+        self.startDate = datetime.datetime.strptime(START_DATE, START_DATE_FORMAT)
+        self.endDate = datetime.datetime.now()
 
         self.handler.download(self.timeZone)
 
+        self.__populate()
+
+    def toString(self, date : datetime.date):
+        for entry in self.entries:
+            if entry.date == date:
+                break        
+        print("Entry:")
+        print("Date:", str(date))
+        print("Work time:", entry.workTime * SEC_TO_HOURS)
+        print("Break time:", entry.breakTime * SEC_TO_HOURS)
+        print("Type of day:", str(entry.dayType))
+
+    def __populate(self):
         for date in rrule(DAILY, dtstart=self.startDate, until=self.endDate):
             date = date.date()
             tmpEntry = Entry(date, 
-                        DayType.Unkown, 
+                        self.__determineStandardDayType(date), 
                         self.parser.getTotalBreakTimeAtDate(self.handler.data, date),
                         self.parser.getTotalWorkTimeAtDate(self.handler.data, date))
-            self.entries.append(tmpEntry)           
+            self.entries.append(tmpEntry)
         pass
 
+    def __correct(self):
+        for entry in self.entries:
+            entry.breakTime = self.__determineBreakTime(entry.breakTime, 
+                                                        entry.supposedBreakTime,
+                                                        entry.workTime,
+                                                        entry.dayType)
+            entry.supposedWorkTime = self.__determineSupposedWorkTime(entry.dayType)
+            pass
+        pass 
 
+    def __determineBreakTime(self, breakTime : int, supposedBreakTime : int, workTime: int, dayType : DayType) -> int :
+        if(dayType != dayType.NormalWork):
+            return 0
+
+        if(breakTime < supposedBreakTime):
+            return supposedBreakTime
+
+        return breakTime
+
+    def __determineSupposedWorkTime(self, dayType : DayType) -> int :
+        # TODO Implement!!!
+        return 0
+
+    def __determineStandardDayType(self, date : datetime.date):
+        # Monday 0, Tuesday 1, Wednesday 2,
+        # Thursday 3, Friday 4, Saturday 5, Sunday 6
+        weekday = date.weekday()
+        if(weekday >= 5):
+            return DayType.NonWorkDay
+        return DayType.NormalWork
+        
+    def calculate(self):
+        pass
 
