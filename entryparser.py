@@ -41,7 +41,7 @@ class EntryParser:
             workdays.append(date)
         return workdays
 
-    def getTotalBreakTimeAtDate(self, data : dict, date : datetime.date):
+    def getTotalBreakTimeAtDate(self, data : dict, date : datetime.date) -> int:
         totalBreakTimeAtDate = 0
         entriesAtDate = self.__getEntriesAtDate(data, date)
         for entry in entriesAtDate:
@@ -52,7 +52,7 @@ class EntryParser:
                 pass
         return totalBreakTimeAtDate
 
-    def getTotalWorkTimeAtDate(self, data : dict, date : datetime.date):
+    def getTotalWorkTimeAtDate(self, data : dict, date : datetime.date) -> int:
         totalWorkTimeAtDate = 0
         entriesAtDate = self.__getEntriesAtDate(data, date)
         for entry in entriesAtDate:

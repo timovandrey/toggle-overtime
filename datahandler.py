@@ -47,15 +47,16 @@ class DataHandler:
         today = datetime.datetime.now()
         startdate = datetime.datetime.strptime(START_DATE, START_DATE_FORMAT)
         self.data = self.fetchDataEntries(startdate, today, timeZone)
+        return
 
     def upload(self):
         raise NotImplementedError
 
     def fetchDataEntries(self, startDate : datetime.date, endDate : datetime.date, timeZone : datetime.time):
-        response = toggl.request(self.modRequestURL(startDate, endDate, timeZone))
+        response = toggl.request(self.__modifyRequestURL(startDate, endDate, timeZone))
         return response
 
-    def modRequestURL(self, startDate : datetime.date, endDate : datetime.date, timeZone : datetime.time):
+    def __modifyRequestURL(self, startDate : datetime.date, endDate : datetime.date, timeZone : datetime.time):
         startDateImplicator = "start_date"
         endDateImplicator = "end_date"
 
