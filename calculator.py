@@ -10,9 +10,7 @@
 # IMPORTS                                                                      #
 ################################################################################
 # Project specific
-from cgitb import handler
-from sqlite3 import DateFromTicks
-from time import timezone
+from xml.sax.handler import EntityResolver
 from credentials import *
 from constants import *
 from exceptions import *
@@ -25,7 +23,6 @@ from re import A
 from urllib import request
 from xmlrpc.client import DateTime
 from dateutil.rrule import rrule, DAILY
-import json
 # Toggl API
 from toggl.TogglPy import Toggl
 
@@ -46,14 +43,24 @@ class Calculator:
                      userPassword=USER_PASSWORD,
                      userApiToken=USER_API_TOKEN)
         self.parser = EntryParser()
-                
         self.timeZone = datetime.time(2, 0, 0)
         self.startDate = datetime.datetime.strptime(START_DATE, START_DATE_FORMAT)
         self.endDate = datetime.datetime.now()
 
+    def update(self):
+        self.handler.data = []
         self.handler.download(self.timeZone)
-
+        self.entries = []
         self.__populate()
+        self.__correct()
+
+    def setDayType(self, date : datetime.time, dayType : DayType) -> bool:
+        # Returns True if successful, False if unsuccessful
+        for entry in self.entries:
+            if(entry.date == date):
+                entry.dayType = dayType
+                return True
+        return False
 
     def toString(self, date : datetime.date):
         for entry in self.entries:
@@ -86,7 +93,7 @@ class Calculator:
         pass 
 
     def __determineBreakTime(self, breakTimeIn : int, supposedBreakTime : int, workTime: int, dayType : DayType) -> int :
-        breakTime : int = 0
+        breakTime : int = breakTimeIn
         if(dayType == DayType.Unkown):
             breakTime = breakTimeIn
             pass
@@ -120,7 +127,6 @@ class Calculator:
         breakTime : int = 0
         workTime : int = 0
         
-        self.__correct()
         for entry in self.entries:
             supposedWorkTime += entry.supposedWorkTime 
             breakTime += entry.breakTime
@@ -132,3 +138,8 @@ class Calculator:
             print("overTime:", overTime * SEC_TO_HOURS)
         return overTime
 
+    def save(self):
+        raise NotImplemented
+
+    def load(self):
+        raise NotImplemented

@@ -17,6 +17,7 @@ from entryparser import EntryParser
 from util import *
 from structures import *
 from constants import *
+from gui import *
 # General
 import datetime
 from dateutil.rrule import rrule, DAILY
@@ -30,12 +31,15 @@ from toggl.TogglPy import Toggl
 
 def main():
     
-    calc = Calculator()
-    calc.calculate(True)
+    #calc = Calculator()
+    #calc.update()
+    #calc.calculate(True)
 
     #date = datetime.date(day=1, month=7, year=2022)
     #calc.toString(date)
 
+    gui = ToGui()
+    gui.run()
 
     return
 
