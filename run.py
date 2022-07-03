@@ -31,10 +31,11 @@ from toggl.TogglPy import Toggl
 def main():
     
     calc = Calculator()
+    calc.calculate(True)
 
-    date = datetime.date(day=2, month=7, year=2022)
-    print(date.weekday())
+    #date = datetime.date(day=1, month=7, year=2022)
     #calc.toString(date)
+
 
     return
 

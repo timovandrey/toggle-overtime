@@ -85,18 +85,26 @@ class Calculator:
             pass
         pass 
 
-    def __determineBreakTime(self, breakTime : int, supposedBreakTime : int, workTime: int, dayType : DayType) -> int :
-        if(dayType != dayType.NormalWork):
-            return 0
-
-        if(breakTime < supposedBreakTime):
-            return supposedBreakTime
-
+    def __determineBreakTime(self, breakTimeIn : int, supposedBreakTime : int, workTime: int, dayType : DayType) -> int :
+        breakTime : int = 0
+        if(dayType == DayType.Unkown):
+            breakTime = breakTimeIn
+            pass
+        if(dayType != DayType.NormalWork):
+            breakTime = 0
+        if(breakTimeIn < supposedBreakTime):
+            breakTime = supposedBreakTime
         return breakTime
 
     def __determineSupposedWorkTime(self, dayType : DayType) -> int :
-        # TODO Implement!!!
-        return 0
+        supposedWorkTime : int
+        if( dayType == DayType.NonWorkDay or
+            dayType == DayType.SickLeave or
+            dayType == DayType.Vacation):
+            supposedWorkTime = 0
+        else:
+            supposedWorkTime = SUPPOSED_WORK_TIME_DAILY * HOURS_TO_SEC
+        return supposedWorkTime
 
     def __determineStandardDayType(self, date : datetime.date):
         # Monday 0, Tuesday 1, Wednesday 2,
@@ -106,6 +114,21 @@ class Calculator:
             return DayType.NonWorkDay
         return DayType.NormalWork
         
-    def calculate(self):
-        pass
+    def calculate(self, printOut : bool) -> int:
+        overTime : int = 0
+        supposedWorkTime : int = 0
+        breakTime : int = 0
+        workTime : int = 0
+        
+        self.__correct()
+        for entry in self.entries:
+            supposedWorkTime += entry.supposedWorkTime 
+            breakTime += entry.breakTime
+            workTime += entry.workTime
+        overTime = workTime - supposedWorkTime
+        if(printOut):
+            print("workTime:", workTime * SEC_TO_HOURS)
+            print("supposedWorkTime:", supposedWorkTime * SEC_TO_HOURS)
+            print("overTime:", overTime * SEC_TO_HOURS)
+        return overTime
 

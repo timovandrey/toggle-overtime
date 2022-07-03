@@ -20,7 +20,7 @@ class DayType(enum.Enum):
     Unkown = 0
     NormalWork = 1
     SickLeave = 2 
-    OvertimeReduction = 3
+    # OvertimeReduction = 3
     Vacation = 4
     NonWorkDay = 5
 
